@@ -119,23 +119,10 @@ namespace GoogleKeep.Controllers
 
             try
             {
-                    var existingNote = _context.Note.Include(n => n.Labels).Include(n => n.Checklists).Where(s => s.ID == note.ID).FirstOrDefault<Note>();
-
-                    if (existingNote != null)
-                    {
-                        existingNote.Title = note.Title;
-                        existingNote.Text = note.Text;
-                        for(int i =0; i<note.Checklists.Count; i++)
-                        {
-                            existingNote.Checklists[i].Item = note.Checklists[i].Item;
-                        }
-                        for (int i = 0; i < note.Labels.Count; i++)
-                        {
-                            existingNote.Labels[i].Name = note.Labels[i].Name;
-                        }
-                        existingNote.IsPinned = note.IsPinned;
-                        await _context.SaveChangesAsync();
-                    }
+                
+                _context.Note.Update(note);
+                await _context.SaveChangesAsync();
+     
             }
             catch (DbUpdateConcurrencyException)
             {
