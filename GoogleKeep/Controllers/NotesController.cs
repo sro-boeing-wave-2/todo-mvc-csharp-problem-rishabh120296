@@ -13,7 +13,7 @@ namespace GoogleKeep.Controllers
     [ApiController]
     public class NotesController : ControllerBase
     {
-        private readonly NotesContext _context;
+        private NotesContext _context;
 
         public NotesController(NotesContext context)
         {
@@ -36,10 +36,11 @@ namespace GoogleKeep.Controllers
 
         // GET: api/Notes
         [HttpGet]
-        public IActionResult GetNote()
+        public IActionResult GetNote([FromQuery] string label = "", [FromQuery] bool? isPinned = null, [FromQuery] string title = "")
         {
-            var a = _context.Note.Include(n => n.Labels);
-            return Ok(a.Include(n=> n.Checklists).Include(n=> n.Checklists));
+            var a = _context.Note.Include(x => x.Checklists).Include(x => x.Labels).Where(
+               m => ((title == "") || (m.Title == title)) && ((label == "") || (m.Labels).Any(b => b.Name == label)) && ((!isPinned.HasValue) || (m.IsPinned == isPinned))).ToList();
+            return Ok(a);
         }
 
         // GET: api/Notes/5
@@ -75,10 +76,7 @@ namespace GoogleKeep.Controllers
             {
                 return NotFound();
             }
-            foreach (var ele in note)
-            {
-                _context.Note.Remove(ele);
-            }
+            _context.Note.RemoveRange(note);
             await _context.SaveChangesAsync();
 
             return Ok(note);
@@ -119,11 +117,25 @@ namespace GoogleKeep.Controllers
                 return BadRequest();
             }
 
-            _context.Entry(note).State = EntityState.Modified;
-
             try
             {
-                await _context.SaveChangesAsync();
+                    var existingNote = _context.Note.Include(n => n.Labels).Include(n => n.Checklists).Where(s => s.ID == note.ID).FirstOrDefault<Note>();
+
+                    if (existingNote != null)
+                    {
+                        existingNote.Title = note.Title;
+                        existingNote.Text = note.Text;
+                        for(int i =0; i<note.Checklists.Count; i++)
+                        {
+                            existingNote.Checklists[i].Item = note.Checklists[i].Item;
+                        }
+                        for (int i = 0; i < note.Labels.Count; i++)
+                        {
+                            existingNote.Labels[i].Name = note.Labels[i].Name;
+                        }
+                        existingNote.IsPinned = note.IsPinned;
+                        await _context.SaveChangesAsync();
+                    }
             }
             catch (DbUpdateConcurrencyException)
             {
