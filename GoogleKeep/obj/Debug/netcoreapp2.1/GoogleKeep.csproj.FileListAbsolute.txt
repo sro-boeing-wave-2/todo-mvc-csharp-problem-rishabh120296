@@ -2,7 +2,6 @@ C:\Users\Admin\Desktop\stackroute\todo-mvc-csharp-problem-rishabh120296\GoogleKe
 C:\Users\Admin\Desktop\stackroute\todo-mvc-csharp-problem-rishabh120296\GoogleKeep\bin\Debug\netcoreapp2.1\GoogleKeep.runtimeconfig.json
 C:\Users\Admin\Desktop\stackroute\todo-mvc-csharp-problem-rishabh120296\GoogleKeep\bin\Debug\netcoreapp2.1\GoogleKeep.runtimeconfig.dev.json
 C:\Users\Admin\Desktop\stackroute\todo-mvc-csharp-problem-rishabh120296\GoogleKeep\bin\Debug\netcoreapp2.1\GoogleKeep.dll
-C:\Users\Admin\Desktop\stackroute\todo-mvc-csharp-problem-rishabh120296\GoogleKeep\obj\Debug\netcoreapp2.1\GoogleKeep.csprojAssemblyReference.cache
 C:\Users\Admin\Desktop\stackroute\todo-mvc-csharp-problem-rishabh120296\GoogleKeep\obj\Debug\netcoreapp2.1\GoogleKeep.csproj.CoreCompileInputs.cache
 C:\Users\Admin\Desktop\stackroute\todo-mvc-csharp-problem-rishabh120296\GoogleKeep\obj\Debug\netcoreapp2.1\GoogleKeep.RazorAssemblyInfo.cache
 C:\Users\Admin\Desktop\stackroute\todo-mvc-csharp-problem-rishabh120296\GoogleKeep\obj\Debug\netcoreapp2.1\GoogleKeep.RazorAssemblyInfo.cs
@@ -12,3 +11,4 @@ C:\Users\Admin\Desktop\stackroute\todo-mvc-csharp-problem-rishabh120296\GoogleKe
 C:\Users\Admin\Desktop\stackroute\todo-mvc-csharp-problem-rishabh120296\GoogleKeep\bin\Debug\netcoreapp2.1\GoogleKeep.pdb
 C:\Users\Admin\Desktop\stackroute\todo-mvc-csharp-problem-rishabh120296\GoogleKeep\obj\Debug\netcoreapp2.1\GoogleKeep.dll
 C:\Users\Admin\Desktop\stackroute\todo-mvc-csharp-problem-rishabh120296\GoogleKeep\obj\Debug\netcoreapp2.1\GoogleKeep.pdb
+C:\Users\Admin\Desktop\stackroute\todo-mvc-csharp-problem-rishabh120296\GoogleKeep\obj\Debug\netcoreapp2.1\GoogleKeep.csprojAssemblyReference.cache
