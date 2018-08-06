@@ -13,6 +13,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.EntityFrameworkCore;
 using GoogleKeep.Models;
 using Swashbuckle.AspNetCore.Swagger;
+using GoogleKeep.Controllers;
 
 namespace GoogleKeep
 {
@@ -41,6 +42,8 @@ namespace GoogleKeep
             {
                 c.SwaggerDoc("v1", new Info { Title = "Google Keep API by Rishabh", Version = "v1" });
             });
+
+            services.AddScoped<INotesService, NotesService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

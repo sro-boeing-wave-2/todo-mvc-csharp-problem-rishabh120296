@@ -13,11 +13,11 @@ namespace GoogleKeep.Controllers
     [ApiController]
     public class NotesController : ControllerBase
     {
-        private NotesContext _context;
+        private INotesService _notesService;
 
-        public NotesController(NotesContext context)
+        public NotesController(INotesService notesService)
         {
-            _context = context;
+            _notesService = notesService;
         }
 
         // POST: api/Notes
@@ -28,9 +28,7 @@ namespace GoogleKeep.Controllers
             {
                 return BadRequest(ModelState);
             }
-            _context.Note.Add(note);
-            await _context.SaveChangesAsync();
-
+            await _notesService.AddNote(note);
             return CreatedAtAction("GetNote", new { id = note.ID }, note);
         }
 
@@ -38,8 +36,7 @@ namespace GoogleKeep.Controllers
         [HttpGet]
         public IActionResult GetNote([FromQuery] string label = "", [FromQuery] bool? isPinned = null, [FromQuery] string title = "")
         {
-            var a = _context.Note.Include(x => x.Checklists).Include(x => x.Labels).Where(
-               m => ((title == "") || (m.Title == title)) && ((label == "") || (m.Labels).Any(b => b.Name == label)) && ((!isPinned.HasValue) || (m.IsPinned == isPinned))).ToList();
+            var a = _notesService.GetAll();
             return Ok(a);
         }
 
@@ -52,7 +49,7 @@ namespace GoogleKeep.Controllers
                 return BadRequest(ModelState);
             }
 
-            var note = await _context.Note.Include(n=> n.Labels).Include(n => n.Checklists).SingleOrDefaultAsync(x => x.ID == id);
+            var note = _notesService.GetSpecificNote(id);
 
             if (note == null)
             {
@@ -71,13 +68,11 @@ namespace GoogleKeep.Controllers
                 return BadRequest(ModelState);
             }
 
-            var note = await _context.Note.Include(n => n.Labels).Include(n => n.Checklists).Where(x => x.Title == title).ToListAsync();
+            var note = await _notesService.DeleteNotesByTitle(title);
             if (note == null)
             {
                 return NotFound();
             }
-            _context.Note.RemoveRange(note);
-            await _context.SaveChangesAsync();
 
             return Ok(note);
         }
@@ -91,14 +86,11 @@ namespace GoogleKeep.Controllers
                 return BadRequest(ModelState);
             }
 
-            var note = await _context.Note.Include(n => n.Labels).Include(n => n.Checklists).SingleOrDefaultAsync(x => x.ID == id);
+            var note = await _notesService.DeleteNoteById(id);
             if (note == null)
             {
                 return NotFound();
             }
-
-            _context.Note.Remove(note);
-            await _context.SaveChangesAsync();
 
             return Ok(note);
         }
@@ -119,14 +111,13 @@ namespace GoogleKeep.Controllers
 
             try
             {
-                
-                _context.Note.Update(note);
-                await _context.SaveChangesAsync();
+
+                await _notesService.EditNote(note);
      
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!NoteExists(id))
+                if (!_notesService.NoteExists(id))
                 {
                     return NotFound();
                 }
@@ -139,9 +130,5 @@ namespace GoogleKeep.Controllers
             return NoContent();
         }
 
-        private bool NoteExists(int id)
-        {
-            return _context.Note.Any(e => e.ID == id);
-        }
     }
 }
