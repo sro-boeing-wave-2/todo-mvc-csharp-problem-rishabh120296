@@ -22,7 +22,7 @@ namespace GoogleKeep.Controllers
             return await _context.Note.Include(n => n.Labels).Include(n => n.Checklists).SingleOrDefaultAsync(x => x.ID == id);
         }
 
-        public IEnumerable<Note> GetAll()
+        public IEnumerable<Note> GetAll(string label, bool? isPinned, string title)
         {
             return _context.Note.Include(n => n.Labels).Include(n => n.Checklists);
         }
@@ -74,7 +74,7 @@ namespace GoogleKeep.Controllers
     public interface INotesService
     {
         Task<Note> GetSpecificNote(int id);
-        IEnumerable<Note> GetAll();
+        IEnumerable<Note> GetAll(string label, bool? isPinned, string title);
         Task<Note> AddNote(Note Note);
         Task<IEnumerable<Note>> DeleteNotesByTitle(string title);
         Task<Note> DeleteNoteById(int id);

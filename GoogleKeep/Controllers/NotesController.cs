@@ -36,7 +36,7 @@ namespace GoogleKeep.Controllers
         [HttpGet]
         public IActionResult GetNote([FromQuery] string label = "", [FromQuery] bool? isPinned = null, [FromQuery] string title = "")
         {
-            var a = _notesService.GetAll();
+            var a = _notesService.GetAll(label, isPinned, title);
             return Ok(a);
         }
 
