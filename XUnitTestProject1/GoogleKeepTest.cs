@@ -24,8 +24,11 @@ namespace GoogleKeep.Tests
             // Act
             var result = controller.GetNote(1);
 
+            var objectresult = result.Result as OkObjectResult;
+            var objectvalue = objectresult.Value as Note;
+
             // Assert
-            Assert.Equal(0, result.Id);
+            Assert.Equal(2, objectvalue.ID);
         }
 
         private async Task<Note> GetTestSessionsAsync()
@@ -33,7 +36,7 @@ namespace GoogleKeep.Tests
             var sessions = new Note()
             
             {
-                ID = 1,
+                ID = 2,
                 Title = "Note 1"
             };
            
