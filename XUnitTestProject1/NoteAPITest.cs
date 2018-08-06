@@ -10,7 +10,7 @@ namespace GoogleKeep.Tests
 
         public NoteAPITest()
         {
-            server = new Server("https://localhost:44360/api/Notes");
+            server = new Server("https://localhost:44360");
         }
 
         [Fact]

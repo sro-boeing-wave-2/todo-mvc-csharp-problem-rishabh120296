@@ -11,6 +11,8 @@
 using System;
 using System.Reflection;
 
+[assembly: Microsoft.AspNetCore.Mvc.Testing.WebApplicationFactoryContentRootAttribute("GoogleKeep", "C:\\Users\\Admin\\Desktop\\stackroute\\todo-mvc-csharp-problem-rishabh120296\\GoogleKee" +
+    "p", "GoogleKeep.csproj", "0")]
 [assembly: System.Reflection.AssemblyCompanyAttribute("GoogleKeep.Tests")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
