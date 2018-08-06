@@ -24,7 +24,7 @@ namespace GoogleKeep.Controllers
 
         public IEnumerable<Note> GetAll()
         {
-            return _context.Note;
+            return _context.Note.Include(n => n.Labels).Include(n => n.Checklists);
         }
 
         public async Task<Note> AddNote(Note note)

@@ -49,7 +49,7 @@ namespace GoogleKeep.Controllers
                 return BadRequest(ModelState);
             }
 
-            var note = _notesService.GetSpecificNote(id);
+            var note = await _notesService.GetSpecificNote(id);
 
             if (note == null)
             {
