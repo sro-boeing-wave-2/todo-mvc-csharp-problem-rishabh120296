@@ -8,4 +8,5 @@ notifications:
 mono: none
 dotnet: 2.1
 script:
-  - dotnet restore XUnitTestProject1/
+  - dotnet restore
+  - dotnet test XUnitTestProject1/
