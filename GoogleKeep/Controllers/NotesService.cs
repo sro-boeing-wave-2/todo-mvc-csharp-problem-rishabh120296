@@ -24,7 +24,8 @@ namespace GoogleKeep.Controllers
 
         public IEnumerable<Note> GetAll(string label, bool? isPinned, string title)
         {
-            return _context.Note.Include(n => n.Labels).Include(n => n.Checklists);
+            return _context.Note.Include(n => n.Labels).Include(n => n.Checklists).Where(
+               m => ((title == "") || (m.Title == title)) && ((label == "") || (m.Labels).Any(b => b.Name == label)) && ((!isPinned.HasValue) || (m.IsPinned == isPinned))).ToList();
         }
 
         public async Task<Note> AddNote(Note note)
