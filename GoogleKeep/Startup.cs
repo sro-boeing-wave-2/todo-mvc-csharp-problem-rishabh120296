@@ -27,15 +27,21 @@ namespace GoogleKeep
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
                 .AddEnvironmentVariables();
             Configuration = builder.Build();
+            _env = env;
         }
 
         public IConfigurationRoot Configuration { get; }
+        public IHostingEnvironment _env { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
-
+            if (_env.IsEnvironment("Testing"))
+            {
+                services.AddDbContext<NotesContext>(options =>
+                    options.UseInMemoryDatabase("testDb"));
+            }
             services.AddDbContext<NotesContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("NotesContext")));
             services.AddSwaggerGen(c =>
