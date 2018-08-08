@@ -38,7 +38,8 @@ namespace GoogleKeep.Tests
             var postRequest = await _client.PostAsync("api/Notes", stringContent);
             postRequest.EnsureSuccessStatusCode();
             var responseString = await postRequest.Content.ReadAsStringAsync();
-            Console.WriteLine(responseString);
+            var responseObject = JsonConvert.DeserializeObject<Note>(responseString);
+            Assert.Equal(3, responseObject.ID);
         }
 
         [Fact]
@@ -47,7 +48,8 @@ namespace GoogleKeep.Tests
             var getRequest = await _client.GetAsync("api/Notes");
             getRequest.EnsureSuccessStatusCode();
             var responseString = await getRequest.Content.ReadAsStringAsync();
-            Console.WriteLine(responseString);
+            var responseObject = JsonConvert.DeserializeObject<Note>(responseString);
+            Assert.Equal(3, responseObject.ID);
         }
 
         [Fact]
@@ -63,7 +65,8 @@ namespace GoogleKeep.Tests
             putRequest.EnsureSuccessStatusCode();
             var getRequest = await _client.GetAsync("api/Notes?title=Note name Changed");
             var responseString = await getRequest.Content.ReadAsStringAsync();
-            Console.WriteLine("This is Put Response \n" + responseString);
+            var responseObject = JsonConvert.DeserializeObject<Note>(responseString);
+            Assert.Equal("Note name Changed", responseObject.Title);
         }
 
         [Fact]
@@ -72,7 +75,8 @@ namespace GoogleKeep.Tests
             var deleteRequest = await _client.DeleteAsync("api/Notes/3");
             deleteRequest.EnsureSuccessStatusCode();
             var responseString = await deleteRequest.Content.ReadAsStringAsync();
-            Console.WriteLine("This is Delete Response \n" + responseString);
+            var responseObject = JsonConvert.DeserializeObject<Note>(responseString);
+            Assert.Equal(3, responseObject.ID);
         }
 
 
