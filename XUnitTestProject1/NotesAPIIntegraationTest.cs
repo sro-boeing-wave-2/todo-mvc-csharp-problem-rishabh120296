@@ -44,11 +44,35 @@ namespace GoogleKeep.Tests
         [Fact]
         public async Task Get()
         {
-         
             var getRequest = await _client.GetAsync("api/Notes");
             getRequest.EnsureSuccessStatusCode();
             var responseString = await getRequest.Content.ReadAsStringAsync();
             Console.WriteLine(responseString);
+        }
+
+        [Fact]
+        public async Task Put()
+        {
+            var note = new Note()
+            {
+                ID = 3,
+                Title = "Note name Changed"
+            };
+            var stringContent = new StringContent(JsonConvert.SerializeObject(note), UnicodeEncoding.UTF8, "application/json");
+            var putRequest = await _client.PutAsync("api/Notes/3", stringContent);
+            putRequest.EnsureSuccessStatusCode();
+            var getRequest = await _client.GetAsync("api/Notes?title=Note name Changed");
+            var responseString = await getRequest.Content.ReadAsStringAsync();
+            Console.WriteLine("This is Put Response \n" + responseString);
+        }
+
+        [Fact]
+        public async Task Delete()
+        {
+            var deleteRequest = await _client.DeleteAsync("api/Notes/3");
+            deleteRequest.EnsureSuccessStatusCode();
+            var responseString = await deleteRequest.Content.ReadAsStringAsync();
+            Console.WriteLine("This is Delete Response \n" + responseString);
         }
 
 
