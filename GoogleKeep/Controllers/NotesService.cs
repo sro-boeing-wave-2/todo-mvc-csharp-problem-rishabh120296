@@ -24,15 +24,21 @@ namespace GoogleKeep.Controllers
 
         public IEnumerable<Note> GetAll(string label, bool? isPinned, string title)
         {
-            return _context.Note.Include(n => n.Labels).Include(n => n.Checklists).Where(
-               m => ((title == "") || (m.Title == title)) && ((label == "") || (m.Labels).Any(b => b.Name == label)) && ((!isPinned.HasValue) || (m.IsPinned == isPinned))).ToList();
+            Func<Note, bool> NoteMatchesTitleOrLabelOrIsPinned = (m) => 
+                (String.IsNullOrEmpty(title) || m.Title == title)
+                && (string.IsNullOrEmpty(label) || m.Labels.Any(b => b.Name == label))
+                && (!isPinned.HasValue || m.IsPinned == isPinned);
+
+            return _context.Note.Include(n => n.Labels).Include(n => n.Checklists)
+            .Where(NoteMatchesTitleOrLabelOrIsPinned).ToList();
         }
 
         public async Task<Note> AddNote(Note note)
         {
             _context.Note.Add(note);
+            
             await _context.SaveChangesAsync();
-            return await Task.FromResult(note);
+            return note;
         }
 
         public async Task<IEnumerable<Note>> DeleteNotesByTitle(string title)
