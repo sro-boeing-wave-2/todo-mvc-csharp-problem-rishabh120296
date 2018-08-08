@@ -48,8 +48,8 @@ namespace GoogleKeep.Tests
             var getRequest = await _client.GetAsync("api/Notes");
             getRequest.EnsureSuccessStatusCode();
             var responseString = await getRequest.Content.ReadAsStringAsync();
-            var responseObject = JsonConvert.DeserializeObject<Note>(responseString);
-            Assert.Equal(3, responseObject.ID);
+            var responseObject = JsonConvert.DeserializeObject<List<Note>>(responseString);
+            Assert.Equal(3, responseObject[0].ID);
         }
 
         [Fact]
@@ -65,8 +65,8 @@ namespace GoogleKeep.Tests
             putRequest.EnsureSuccessStatusCode();
             var getRequest = await _client.GetAsync("api/Notes?title=Note name Changed");
             var responseString = await getRequest.Content.ReadAsStringAsync();
-            var responseObject = JsonConvert.DeserializeObject<Note>(responseString);
-            Assert.Equal("Note name Changed", responseObject.Title);
+            var responseObject = JsonConvert.DeserializeObject<List<Note>>(responseString);
+            Assert.Equal("Note name Changed", responseObject[0].Title);
         }
 
         [Fact]
