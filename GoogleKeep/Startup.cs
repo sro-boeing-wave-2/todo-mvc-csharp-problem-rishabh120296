@@ -43,7 +43,7 @@ namespace GoogleKeep
                     options.UseInMemoryDatabase("testDb"));
             }
             services.AddDbContext<NotesContext>(options =>
-                    options.UseSqlServer(Configuration.GetConnectionString("NotesContext")));
+                    options.UseSqlServer(Configuration.GetConnectionString("NotesContext"), dboptions => dboptions.EnableRetryOnFailure(maxRetryCount: 10, maxRetryDelay: TimeSpan.FromSeconds(30), errorNumbersToAdd: null)));
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new Info { Title = "Google Keep API by Rishabh", Version = "v1" });
@@ -55,7 +55,7 @@ namespace GoogleKeep
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, NotesContext context)
         {
             if (env.IsDevelopment())
             {
@@ -83,6 +83,7 @@ namespace GoogleKeep
             loggerFactory.AddDebug();
 
             app.UseMvc();
+            context.Database.Migrate();
         }
     }
 }
